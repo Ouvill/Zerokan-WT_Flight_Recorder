@@ -9,7 +9,7 @@ class Http_Client {
 
  public:
   Http_Client(std::string url);
-  void get_data(std::string &data);
+  void get_data(std::string get_request,std::string &data);
 
 };
 
