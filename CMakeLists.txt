@@ -19,7 +19,7 @@ elseif()
     message("Boost NOT Found!")
 endif()
 
-set(SOURCE_FILES main.cpp hudmsg_reader.cpp hudmsg_reader.h)
+set(SOURCE_FILES main.cpp hudmsg_reader.cpp hudmsg_reader.h http_client.cpp http_client.h)
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
 
 target_link_libraries(${PROJECT_NAME} ${Boost_LIBRARIES})
