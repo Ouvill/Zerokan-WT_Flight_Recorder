@@ -23,3 +23,8 @@ set(SOURCE_FILES main.cpp hudmsg_reader.cpp hudmsg_reader.h http_client.cpp http
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
 
 target_link_libraries(${PROJECT_NAME} ${Boost_LIBRARIES})
+
+if(WIN32)
+    target_link_libraries(${PROJECT_NAME} libboost_system-mgw49-mt-s-1_58.a)
+    target_link_libraries(${PROJECT_NAME} ws2_32)
+endif()
