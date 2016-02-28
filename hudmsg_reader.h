@@ -1,0 +1,15 @@
+#ifndef ZEROKAN_WT_FLIGHT_RECORDER_HUBMSG_READER_H
+#define ZEROKAN_WT_FLIGHT_RECORDER_HUBMSG_READER_H
+
+
+#include <string>
+
+
+class Hudmsg_Reader {
+
+
+
+};
+
+
+#endif //ZEROKAN_WT_FLIGHT_RECORDER_HUBMSG_READER_H
