@@ -23,17 +23,14 @@ int HudmsgConnector::get_damages(picojson::array &damages) {
 //  http->get_data(get_string, json);
 
   picojson::value v;
-  std::ifstream infile;
-  std::string json="";
+  std::ifstream ifs;
 
-  infile.open("hudmsg.json");
-  while(!infile.eof()) {
-    std::string work="";
-    infile >> work;
-    json += work;
-  }
+  ifs.open("hudmsg.json");
+  std::istreambuf_iterator<char> it(ifs);
+  std::istreambuf_iterator<char> last;
+  std::string json(it , last);
 
-  infile.close();
+  ifs.close();
 
   get_damages_array(json, damages);
 
