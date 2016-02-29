@@ -7,20 +7,21 @@
 #include "picojson.hpp"
 
 
-class HudmsgReader{
+class HudmsgConnector {
 
  private:
 //  HttpClient *http;
   int lastEvt = 0;
   int lastDmg = 0;
+  int get_damages_array(std::string json, picojson::array &json_array);
+
 
  public:
-  HudmsgReader();
-  ~HudmsgReader();
-  int get_msg();
+  HudmsgConnector();
+  ~HudmsgConnector();
+  int get_damages(picojson::array &damages);
 
 
-  int get_damages_array(std::string json, picojson::array &json_array);
 };
 
 class Damage {

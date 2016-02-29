@@ -5,16 +5,16 @@
 #include <iostream>
 #include <sstream>
 
-HudmsgReader::HudmsgReader() {
+HudmsgConnector::HudmsgConnector() {
 //  http = new HttpClient("localhost:8111");
 
 }
 
-HudmsgReader::~HudmsgReader() {
+HudmsgConnector::~HudmsgConnector() {
 //  delete http;
 }
 
-int HudmsgReader::get_msg() {
+int HudmsgConnector::get_damages(picojson::array &damages) {
 
   std::cout << "test" << std::endl;
 //  std::string get_string;
@@ -35,19 +35,20 @@ int HudmsgReader::get_msg() {
 
   infile.close();
 
-
-
-  picojson::array damages;
   get_damages_array(json, damages);
+
+  std::stringstream ss;
+  std::string dst_msg = "";
   for (picojson::array::iterator i = damages.begin(); i != damages.end(); ++i) {
     picojson::object damage = i->get<picojson::object>();
-    std::cout << damage["id"].get<double>() << ":" << damage["msg"].get<std::string>() << std::endl;
+    ss << damage["id"].get<double>() << ":" << damage["msg"].get<std::string>() << std::endl;
+    ss >> dst_msg;
   }
 
 
 }
 
-int HudmsgReader::get_damages_array(std::string json, picojson::array &damages)
+int HudmsgConnector::get_damages_array(std::string json, picojson::array &damages)
 {
   picojson::value v;
   std::string err = parse(v, json);
