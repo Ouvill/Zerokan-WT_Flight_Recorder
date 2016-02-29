@@ -3,12 +3,44 @@
 
 
 #include <string>
+#include "http_client.h"
+#include "picojson.hpp"
 
 
-class Hudmsg_Reader {
+class HudmsgReader{
+
+ private:
+//  HttpClient *http;
+  int lastEvt = 0;
+  int lastDmg = 0;
+
+ public:
+  HudmsgReader();
+  ~HudmsgReader();
+  int get_msg();
 
 
+  int get_damages_array(std::string json, picojson::array &json_array);
+};
 
+class Damage {
+ private:
+  int id;
+  std::string msg;
+  std::string sender;
+  bool emeny;
+  std::string mode;
+
+ public:
+
+};
+
+class ShotDownMsg {
+ private:
+  std::string killer;
+  std::string killer_airframe;
+  std::string victim;
+  std::string victim_airframe;
 };
 
 
