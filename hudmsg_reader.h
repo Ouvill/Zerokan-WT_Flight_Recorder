@@ -26,13 +26,14 @@ class HudmsgConnector {
 
 class Damage {
  private:
-  int id;
-  std::string msg;
-  std::string sender;
-  bool emeny;
-  std::string mode;
+  int id_;
+  std::string msg_;
+  std::string sender_;
+  bool eneny_;
+  std::string mode_;
 
  public:
+  Damage(int id, std::string msg, std::string sender, bool enemy, std::string mode);
 
 };
 
@@ -43,23 +44,29 @@ class Damages {
 
 class ShotDownMsg {
  private:
-  std::string killer;
-  std::string killer_airframe;
-  std::string victim;
-  std::string victim_airframe;
+  std::string killer_;
+  std::string killer_airframe_;
+  std::string victim_;
+  std::string victim_airframe_;
 
  public:
-  ShotDownMsg(std::string msg);
+  ShotDownMsg(const std::string& msg);
+  std::string killer();
+  std::string killer_airframe();
+  std::string victim();
+  std::string victim_airframe();
+
+
 };
 
 class DestroyedMsg {
  private:
-  std::string killer;
-  std::string killer_airframe;
-  std::string victim_object;
+  std::string killer_;
+  std::string killer_airframe_;
+  std::string victim_object_;
 
  public:
-  DestroyedMsg(std::string msg);
+  DestroyedMsg(const std::string& msg);
 
 };
 
