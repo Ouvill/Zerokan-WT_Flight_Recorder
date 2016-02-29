@@ -38,7 +38,7 @@ get_target_property(QtCore_location Qt5::Widgets LOCATION)
 qt5_wrap_ui(QT_UI_HEADERS mainwindow.ui)
 
 
-set(SOURCE_FILES main.cpp hudmsg_reader.cpp hudmsg_reader.h http_client.cpp http_client.h)
+set(SOURCE_FILES main.cpp hudmsg_reader.cpp hudmsg_reader.h http_client.cpp http_client.h mainwindow.cpp mainwindow.h)
 add_executable(${PROJECT_NAME} ${SOURCE_FILES} ${QT_UI_HEADERS})
 
 #Use the Boost
@@ -47,6 +47,8 @@ target_link_libraries(${PROJECT_NAME} ${Boost_LIBRARIES})
 #target_link_libraries(${PROJECT_NAME} LINK_PUBLIC Qt5::Core Qt5::Gui Qt5::Multimedia Qt5::Widgets)
 target_link_libraries(${PROJECT_NAME} Qt5::Core Qt5::Gui Qt5::Multimedia Qt5::Widgets)
 
+
+#Boost Setting
 if(WIN32)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D_WIN32_WINNT=0x0501")
     target_link_libraries(${PROJECT_NAME} libboost_system-mgw49-mt-s-1_58.a)
