@@ -1,10 +1,13 @@
 #include <iostream>
 #include "http_client.h"
 #include "hudmsg_reader.h"
+#include <QApplication>
+#include <QTextCodec>
+#include "mainwindow.h"
 
 using namespace std;
 
-int main() {
+int main(int argc, char* argv[]) {
     cout << "Hello, World!" << endl;
 
 //  std::string foo;
@@ -12,9 +15,14 @@ int main() {
 //  client->get_data("/ohmi_bus/tim_dsp.asp?projCd=1&eigCd=2&teicd=3314&KaiKbn=NOW&pole=1",foo);
 //  std::cout << foo;
 
+//
+//  HudmsgConnector hudmsg;
+//  hudmsg.get_damages();
 
-  HudmsgReader hudmsg;
-  hudmsg.get_msg();
+  QApplication app(argc, argv);
+  QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
+  MainWindow *mainWindow = new MainWindow;
+  mainWindow->show();
+  return app.exec();
 
-  return 0;
 }
