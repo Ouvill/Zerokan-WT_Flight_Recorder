@@ -14,35 +14,46 @@ HudmsgConnector::~HudmsgConnector() {
 //  delete http;
 }
 
-int HudmsgConnector::get_damages(picojson::array &damages) {
+int HudmsgConnector::get_damages(std::vector<ShotDownMsg>& shotdown_list) {
 
-  std::cout << "test" << std::endl;
 //  std::string get_string;
 //  std::string json;
-//  get_string = "/hudmsg?lastEvt" + std::to_string(lastEvt) + "&lastDmg" = std::to_string(lastDmg);
+//  get_string = "/hudmsg?lastEvt=" + std::to_string(lastEvt_) + "&lastDmg=" + std::to_string(lastDmg_);
 //  http->get_data(get_string, json);
 
+  picojson::array damages_json;
   picojson::value v;
   std::ifstream ifs;
 
+  //local_file を 読み込み
   ifs.open("hudmsg.json");
   std::istreambuf_iterator<char> it(ifs);
   std::istreambuf_iterator<char> last;
   std::string json(it , last);
-
   ifs.close();
 
-  get_damages_array(json, damages);
+  get_damages_array(json, damages_json);
 
-  std::stringstream ss;
-  std::string dst_msg = "";
+  Damages damages;
+  std::vector<ShotDownMsg> shot_down_msgs;
+  std::vector<DestroyedMsg> destroyed_msgs;
 
-  for (picojson::array::iterator i = damages.begin(); i != damages.end(); ++i) {
-    picojson::object damage = i->get<picojson::object>();
-    Damage(damage["id"].get<double>(), damage["msg"].get<std::string>(),
-           damage["sender"].get<std::string>(), damage["enemy"].get<bool>(),
-           damage["mode"].get<std::string>());
-    lastDmg=damage["id"].get<double>();
+  for (picojson::array::iterator i = damages_json.begin(); i != damages_json.end(); ++i) {
+    picojson::object damage_object = i->get<picojson::object>();
+    Damage damage((int)damage_object["id"].get<double>(), damage_object["msg"].get<std::string>(),
+           damage_object["sender"].get<std::string>(), damage_object["enemy"].get<bool>(),
+           damage_object["mode"].get<std::string>());
+
+    if(damage.msg().isShotDownMsg()) {
+      shotdown_list.push_back(ShotDownMsg(damage.msg()));
+    }
+
+    if(damage.msg().isDestoryedMsg()) {
+      destroyed_msgs.push_back(DestroyedMsg(damage.msg()));
+    }
+
+    damages.push_back(damage);
+    lastDmg_ = (int)damage_object["id"].get<double>();
   }
 }
 
@@ -61,26 +72,35 @@ int HudmsgConnector::get_damages_array(std::string json, picojson::array &damage
   return 0;
 }
 
+Msg::Msg(std::string msg):std::string(msg) {};
+
+bool Msg::isShotDownMsg() {
+  if (find(" shot down ") != std::string::npos) { return true;}
+  else {return false;};
+}
+
+bool Msg::isDestoryedMsg() {
+  if (find(" destroyed ") != std::string::npos ) {
+    return true;
+  } else { return false;};
+}
+
+
+
 //std::string msg の データ
 //=ECVAS= DK_DaiZi_CN (スピットファイア F) shot down =BAT= masterchieffffff (ウェリントン)
 //Jokebo (IL-10) destroyed 駆逐艦"
-Damage::Damage(int id, std::string msg, std::string sender, bool enemy, std::string mode) {
+Damage::Damage(int id, std::string msg, std::string sender, bool enemy, std::string mode) : msg_(msg) {
   this->id_ = id;
-  this->msg_ = msg;
   this->sender_ = sender;
   this->eneny_ = enemy;
   this->mode_ = mode;
+}
 
-  std::size_t is_shot_down = msg.find(" shot down ");
-  std::size_t is_destroy = msg.find(" destroyed ");
+Msg Damage::msg() { return msg_;};
 
-  if (is_shot_down != std::string::npos) {
-    ShotDownMsg(this->msg_);
-  }
+void Damages::serch_shot_down() {
 
-  if (is_destroy) {
-    DestroyedMsg(this->msg_);
-  }
 }
 
 DamageMsg::DamageMsg(const std::string& msg) {
@@ -92,8 +112,6 @@ DamageMsg::DamageMsg(const std::string& msg) {
 
 std::string DamageMsg::killer() {return killer_;}
 std::string DamageMsg::killer_airframe() {return killer_airframe_; }
-
-
 
 ShotDownMsg::ShotDownMsg(const std::string& msg) : DamageMsg(msg) {
   std::string keyword = " shot down ";
@@ -107,7 +125,6 @@ ShotDownMsg::ShotDownMsg(const std::string& msg) : DamageMsg(msg) {
   victim_airframe_ = std::string(msg, secound_open_quote + 1, secound_close_quote - secound_open_quote -1);
 
 }
-
 
 std::string ShotDownMsg::victim() {
   return victim_;
