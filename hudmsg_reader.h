@@ -10,8 +10,8 @@
 class HudmsgConnector {
 
  private:
-//  HttpClient *http_;
-  int lastEvt = 0;
+  HttpClient *http_;
+  int lastEvt_ = 0;
   int lastDmg_ = 0;
   int get_damages_array(std::string json, picojson::array &json_array);
 
@@ -19,7 +19,7 @@ class HudmsgConnector {
  public:
   HudmsgConnector();
   ~HudmsgConnector();
-  int get_damages(std::vector<ShotDownMsg>& shotdown_list);
+  int get_damages(Damages& damages);
 
 
 };

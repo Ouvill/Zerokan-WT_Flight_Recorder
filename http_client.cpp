@@ -10,7 +10,7 @@ namespace ip = asio::ip;
 
 
 HttpClient::HttpClient(std::string url) {
-  this->url = url;
+  this->url_ = url;
 
 
 }
@@ -24,10 +24,11 @@ void HttpClient::get_data(std::string get_request, std::string &dst_data) {
 
     //名前解決(ホスト名からIPアドレスに変換)する
     ip::tcp::resolver resolver(io_service);
-    ip::tcp::resolver::query query(url, "http");
+    ip::tcp::resolver::query query("localhost", "http");
 
     //ホスト情報を設定する
-    ip::tcp::endpoint endpoint(*resolver.resolve(query));
+//    ip::tcp::endpoint endpoint(*resolver.resolve(query));
+    ip::tcp::endpoint endpoint(asio::ip::address::from_string("127.0.0.1"), 8111);
 
     //ソケットへ接続
     sock.connect(endpoint);
@@ -58,10 +59,11 @@ void HttpClient::get_data(std::string get_request, std::string &dst_data) {
         dst_data=data.substr(pos+4);
       }
     }
-
   }
+
   catch (exception& e)
   {
     cout << e.what();
+    throw e;
   }
 }

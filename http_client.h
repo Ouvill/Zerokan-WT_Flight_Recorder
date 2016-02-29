@@ -5,7 +5,8 @@
 
 class HttpClient {
  private:
-  std::string url;
+  std::string url_;
+  int port_;
 
  public:
   HttpClient(std::string url);
