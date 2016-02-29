@@ -1,0 +1,2 @@
+マップの場所？
+localhost.8111/map.img
