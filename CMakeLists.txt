@@ -19,10 +19,33 @@ elseif()
     message("Boost NOT Found!")
 endif()
 
-set(SOURCE_FILES main.cpp hudmsg_reader.cpp hudmsg_reader.h http_client.cpp http_client.h)
-add_executable(${PROJECT_NAME} ${SOURCE_FILES})
+############################
+##          Qt
+############################
+# Find includes in corresponding build directories
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+# Instruct CMake to run moc automatically when needed.
+set(CMAKE_AUTOMOC ON)
+# dependency
+find_package(Qt5Core)
+get_target_property(QtCore_location Qt5::Core LOCATION)
+find_package(Qt5Gui)
+get_target_property(QtCore_location Qt5::Gui LOCATION)
+find_package(Qt5Multimedia)
+get_target_property(QtCore_location Qt5::Multimedia LOCATION)
+find_package(Qt5Widgets)
+get_target_property(QtCore_location Qt5::Widgets LOCATION)
+qt5_wrap_ui(QT_UI_HEADERS mainwindow.ui)
 
+
+set(SOURCE_FILES main.cpp hudmsg_reader.cpp hudmsg_reader.h http_client.cpp http_client.h)
+add_executable(${PROJECT_NAME} ${SOURCE_FILES} ${QT_UI_HEADERS})
+
+#Use the Boost
 target_link_libraries(${PROJECT_NAME} ${Boost_LIBRARIES})
+# Use the Widgets module from Qt 5.
+#target_link_libraries(${PROJECT_NAME} LINK_PUBLIC Qt5::Core Qt5::Gui Qt5::Multimedia Qt5::Widgets)
+target_link_libraries(${PROJECT_NAME} Qt5::Core Qt5::Gui Qt5::Multimedia Qt5::Widgets)
 
 if(WIN32)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D_WIN32_WINNT=0x0501")
