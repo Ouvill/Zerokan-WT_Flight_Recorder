@@ -83,15 +83,23 @@ Damage::Damage(int id, std::string msg, std::string sender, bool enemy, std::str
   }
 }
 
-ShotDownMsg::ShotDownMsg(const std::string& msg) {
-  std::string keyword = " shot down ";
-  std::size_t first_open_quote = msg.find("(");
-  killer_ = std::string(msg, 0, first_open_quote -1 );
-  std::size_t first_close_quote = msg.find(")");
-  killer_airframe_ = std::string(msg, first_open_quote + 1,first_close_quote - first_open_quote - 1);
+DamageMsg::DamageMsg(const std::string& msg) {
+  std::size_t open_quote_pos = msg.find("(");
+  killer_ = std::string(msg, 0, open_quote_pos -1);
+  std::size_t close_quote_pos = msg.find(")");
+  killer_airframe_ = std::string(msg, open_quote_pos + 1, close_quote_pos - open_quote_pos -1);
+}
 
-  std::size_t shot_down_pos = msg.find(keyword);
-  std::size_t after_keyword_pos = shot_down_pos + keyword.length();
+std::string DamageMsg::killer() {return killer_;}
+std::string DamageMsg::killer_airframe() {return killer_airframe_; }
+
+
+
+ShotDownMsg::ShotDownMsg(const std::string& msg) : DamageMsg(msg) {
+  std::string keyword = " shot down ";
+
+  std::size_t keyword_pos = msg.find(keyword);
+  std::size_t after_keyword_pos = keyword_pos + keyword.length();
 
   std::size_t secound_open_quote = msg.find("(", after_keyword_pos);
   victim_ = std::string(msg, after_keyword_pos, secound_open_quote - after_keyword_pos -1) ;
@@ -100,13 +108,6 @@ ShotDownMsg::ShotDownMsg(const std::string& msg) {
 
 }
 
-std::string ShotDownMsg::killer() {
-  return killer_;
-}
-
-std::string ShotDownMsg::killer_airframe(){
-  return killer_airframe_;
-}
 
 std::string ShotDownMsg::victim() {
   return victim_;
@@ -118,13 +119,13 @@ std::string ShotDownMsg::victim_airframe() {
 
 //std::string msg のデータ
 //Jokebo (IL-10) destroyed 駆逐艦"
-DestroyedMsg::DestroyedMsg(const std::string& msg) {
+DestroyedMsg::DestroyedMsg(const std::string& msg) : DamageMsg(msg) {
   std::string keyword = " destroyed ";
-
-  std::size_t open_quote_pos = msg.find("(");
-  killer_ = std::string(msg, 0, open_quote_pos -1 );
-
-
+  std::size_t keyword_pos = msg.find(keyword);
+  std::size_t after_keyword_pos = keyword_pos + keyword.length();
+  victim_ = std::string(msg, after_keyword_pos);
 }
 
-
+std::string DestroyedMsg::victim() {
+  return victim_;
+}

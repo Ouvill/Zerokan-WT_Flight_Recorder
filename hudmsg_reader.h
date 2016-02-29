@@ -3,6 +3,7 @@
 
 
 #include <string>
+#include <vector>
 #include "http_client.h"
 #include "picojson.hpp"
 
@@ -42,31 +43,41 @@ class Damages {
   std::vector<Damage> damages;
 };
 
-class ShotDownMsg {
+class DamageMsg {
  private:
   std::string killer_;
   std::string killer_airframe_;
+ public:
+  DamageMsg(const std::string& msg);
+  std::string killer();
+  std::string killer_airframe();
+  std::string victim();
+};
+
+class ShotDownMsg : public DamageMsg {
+ private:
+//  std::string killer_;
+//  std::string killer_airframe_;
   std::string victim_;
   std::string victim_airframe_;
 
  public:
   ShotDownMsg(const std::string& msg);
-  std::string killer();
-  std::string killer_airframe();
   std::string victim();
   std::string victim_airframe();
 
 
 };
 
-class DestroyedMsg {
+class DestroyedMsg : public DamageMsg{
  private:
-  std::string killer_;
-  std::string killer_airframe_;
-  std::string victim_object_;
+//  std::string killer_;
+//  std::string killer_airframe_;
+  std::string victim_;
 
  public:
   DestroyedMsg(const std::string& msg);
+  std::string victim();
 
 };
 
