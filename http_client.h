@@ -3,12 +3,12 @@
 
 #include <string>
 
-class Http_Client {
+class HttpClient {
  private:
   std::string url;
 
  public:
-  Http_Client(std::string url);
+  HttpClient(std::string url);
   void get_data(std::string get_request,std::string &data);
 
 };

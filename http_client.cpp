@@ -9,12 +9,12 @@ namespace asio = boost::asio;
 namespace ip = asio::ip;
 
 
-Http_Client::Http_Client(std::string url) {
+HttpClient::HttpClient(std::string url) {
   this->url = url;
 
 
 }
-void Http_Client::get_data(std::string get_request, std::string &dst_data) {
+void HttpClient::get_data(std::string get_request, std::string &dst_data) {
   try
   {
     asio::io_service io_service;
