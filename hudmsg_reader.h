@@ -36,12 +36,31 @@ class Damage {
 
 };
 
+class Damages {
+ private:
+  std::vector<Damage> damages;
+};
+
 class ShotDownMsg {
  private:
   std::string killer;
   std::string killer_airframe;
   std::string victim;
   std::string victim_airframe;
+
+ public:
+  ShotDownMsg(std::string msg);
+};
+
+class DestroyedMsg {
+ private:
+  std::string killer;
+  std::string killer_airframe;
+  std::string victim_object;
+
+ public:
+  DestroyedMsg(std::string msg);
+
 };
 
 
