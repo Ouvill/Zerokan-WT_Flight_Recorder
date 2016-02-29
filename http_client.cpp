@@ -52,7 +52,11 @@ void HttpClient::get_data(std::string get_request, std::string &dst_data) {
     else
     {
       const std::string data(asio::buffer_cast<const char*>(buffer.data()), buffer.size());
-      dst_data=data;
+
+      std::string::size_type pos = data.find("\r\n\r\n");
+      if( pos!= std::string::npos) {
+        dst_data=data.substr(pos+4);
+      }
     }
 
   }
