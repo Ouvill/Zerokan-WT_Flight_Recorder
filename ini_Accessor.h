@@ -4,17 +4,18 @@
 #include <string>
 
 
-class IniReader {
+class IniAccessor {
  private:
+  std::string filename_;
   std::string user_name_;
   std::string warthunder_client_path_;
 
  public:
-  IniReader(std::string filename);
+  IniAccessor(const std::string& filename);
   std::string user_name();
   std::string warthunder_client_path();
 
-
+  void export_ini();
 
 };
 
