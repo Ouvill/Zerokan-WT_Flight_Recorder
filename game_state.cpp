@@ -9,7 +9,7 @@ GameState::GameState() {
 GameState::~GameState() {
 }
 
-int GameState::state() {
+int GameState::get() {
   std::string current_map_obj;
 
   HttpClient http("localhost");
@@ -28,5 +28,6 @@ int GameState::state() {
     state_ = GameEnd;
   }
 
+  previous_map_obj = current_map_obj;
   return state_;
 }

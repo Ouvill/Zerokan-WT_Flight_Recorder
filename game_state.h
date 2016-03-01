@@ -20,7 +20,7 @@ class GameState {
 
   GameState();
   ~GameState();
-  int state();
+  int get();
 };
 
 
