@@ -9,26 +9,12 @@
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) , ui(new Ui::MainWindow) {
   setupUi(this);
 
-//  std::vector<ShotDownMsg> shotdown_list;
   Damages damages;
   HudmsgReader hudmsg;
   if(!(hudmsg.get_damages(damages))) {
     std::cout << "error" << std::endl;
   };
 
-
-
-  std::string dst_msg = "";
-
-  QStringListModel *model = new QStringListModel();
-  QStringList qkillList;
-  QStringList qkilledList;
-  QStringList qdestroyList;
-//  for (auto itr = shotdown_list.begin(); itr < shotdown_list.end(); ++itr) {
-//    std::string oneline = itr->killer() +"("+itr->killer_airframe()+") -> "
-//        + itr->victim() + "(" + itr->victim_airframe() + ")" ;
-//    qlist << oneline.c_str();
-//  }
   for (auto itr = damages.begin(); itr < damages.end(); ++itr) {
     if(itr->msg().type() == Msg::SHOTDOWN_MSG) {
       ShotDownMsg shotDownMsg(itr->msg());
