@@ -5,64 +5,52 @@
 #include <iostream>
 #include <sstream>
 
-HudmsgConnector::HudmsgConnector() {
+HudmsgReader::HudmsgReader() {
   http_ = new HttpClient("localhost:8111");
 
 }
 
-HudmsgConnector::~HudmsgConnector() {
+HudmsgReader::~HudmsgReader() {
   delete http_;
 }
 
-int HudmsgConnector::get_damages(Damages& damages) {
+bool HudmsgReader::get_damages(Damages& damages) {
 
-  std::string get_string;
-  std::string json;
-  get_string = "/hudmsg?lastEvt=" + std::to_string(lastEvt_) + "&lastDmg=" + std::to_string(lastDmg_);
-  try {
-    http_->get_data(get_string, json);
+//  std::string get_string;
+//  std::string json;
+//  get_string = "/hudmsg?lastEvt=" + std::to_string(lastEvt_) + "&lastDmg=" + std::to_string(lastDmg_);
+//  if (!(http_->get_data(get_string, json))) {
+//    return false;
+//  };
 
-    picojson::array damages_json;
-    picojson::value v;
-    std::ifstream ifs;
+  picojson::array damages_json;
+  picojson::value v;
 
-//  local_file を 読み込み
-//  ifs.open("hudmsg.json");
-//  std::istreambuf_iterator<char> it(ifs);
-//  std::istreambuf_iterator<char> last;
-//  std::string json(it , last);
-//  ifs.close();
+//    local_file を 読み込み
+  std::ifstream ifs;
+  ifs.open("hudmsg.json");
+  std::istreambuf_iterator<char> it(ifs);
+  std::istreambuf_iterator<char> last;
+  std::string json(it , last);
+  ifs.close();
 
-    get_damages_array(json, damages_json);
+  get_damages_array(json, damages_json);
 
 //    Damages damages;
-    std::vector<ShotDownMsg> shotdown_list;
-    std::vector<ShotDownMsg> shot_down_msgs;
-    std::vector<DestroyedMsg> destroyed_msgs;
+  for (picojson::array::iterator i = damages_json.begin(); i != damages_json.end(); ++i) {
+    picojson::object damage_object = i->get<picojson::object>();
+    Damage damage((int)damage_object["id"].get<double>(), damage_object["msg"].get<std::string>(),
+                  damage_object["sender"].get<std::string>(), damage_object["enemy"].get<bool>(),
+                  damage_object["mode"].get<std::string>());
 
-    for (picojson::array::iterator i = damages_json.begin(); i != damages_json.end(); ++i) {
-      picojson::object damage_object = i->get<picojson::object>();
-      Damage damage((int)damage_object["id"].get<double>(), damage_object["msg"].get<std::string>(),
-                    damage_object["sender"].get<std::string>(), damage_object["enemy"].get<bool>(),
-                    damage_object["mode"].get<std::string>());
-
-      if(damage.msg().isShotDownMsg()) {
-        shotdown_list.push_back(ShotDownMsg(damage.msg()));
-      }
-
-      if(damage.msg().isDestoryedMsg()) {
-        destroyed_msgs.push_back(DestroyedMsg(damage.msg()));
-      }
-
-      damages.push_back(damage);
-      lastDmg_ = (int)damage_object["id"].get<double>();
-    }
-  } catch (std::exception& e){
-    throw e;
+    damages.push_back(damage);
+    lastDmg_ = (int)damage_object["id"].get<double>();
   }
+
+  return true;
 }
 
-int HudmsgConnector::get_damages_array(std::string json, picojson::array &damages)
+int HudmsgReader::get_damages_array(std::string json, picojson::array &damages)
 {
   picojson::value v;
   std::string err = parse(v, json);

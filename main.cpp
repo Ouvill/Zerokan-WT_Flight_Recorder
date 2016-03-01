@@ -16,7 +16,7 @@ int main(int argc, char* argv[]) {
 //  std::cout << foo;
 
 //
-//  HudmsgConnector hudmsg;
+//  HudMsgReader hudmsg;
 //  hudmsg.get_damages();
 
   QApplication app(argc, argv);

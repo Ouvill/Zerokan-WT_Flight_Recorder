@@ -2,18 +2,19 @@
 #include <string>
 
 
-Msg::Msg(std::string msg):std::string(msg) {};
+Msg::Msg(std::string msg) : std::string(msg) {
 
-bool Msg::isShotDownMsg() {
-  if (find(" shot down ") != std::string::npos) { return true;}
-  else {return false;};
-}
+  if (find(" shot down ") != std::string::npos) {
+    type_ = SHOTDOWN_MSG;
+  } else if (find(" destroyed ") != std::string::npos ) {
+    type_ = DESTROYED_MSG;
+  } else {
+    type_ = OTHER_MSG;
+  }
+};
 
-bool Msg::isDestoryedMsg() {
-  if (find(" destroyed ") != std::string::npos ) {
-    return true;
-  } else { return false;};
-}
+int Msg::type() { return type_; }
+
 
 
 
@@ -29,9 +30,7 @@ Damage::Damage(int id, std::string msg, std::string sender, bool enemy, std::str
 
 Msg Damage::msg() { return msg_;};
 
-void Damages::serch_shot_down() {
 
-}
 
 DamageMsg::DamageMsg(const std::string& msg) {
   std::size_t open_quote_pos = msg.find("(");

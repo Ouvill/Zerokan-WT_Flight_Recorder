@@ -7,7 +7,7 @@
 #include "picojson.hpp"
 #include "damages.h"
 
-class HudmsgConnector {
+class HudmsgReader {
 
  private:
   HttpClient *http_;
@@ -15,11 +15,14 @@ class HudmsgConnector {
   int lastDmg_ = 0;
   int get_damages_array(std::string json, picojson::array &json_array);
 
-
  public:
-  HudmsgConnector();
-  ~HudmsgConnector();
-  int get_damages(Damages& damages);
+  static const int ERROR_CODE = -1;
+
+  HudmsgReader();
+  ~HudmsgReader();
+  bool get_damages(Damages& damages);
+
+
 
 
 };

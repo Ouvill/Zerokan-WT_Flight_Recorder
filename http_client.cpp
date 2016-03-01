@@ -14,7 +14,7 @@ HttpClient::HttpClient(std::string url) {
 
 
 }
-void HttpClient::get_data(std::string get_request, std::string &dst_data) {
+bool HttpClient::get_data(std::string get_request, std::string &dst_data) {
   try
   {
     asio::io_service io_service;
@@ -59,11 +59,13 @@ void HttpClient::get_data(std::string get_request, std::string &dst_data) {
         dst_data=data.substr(pos+4);
       }
     }
+
+    return true;
   }
 
   catch (exception& e)
   {
-    cout << e.what();
-    throw e;
+    cout << e.what() << endl;
+    return false;
   }
 }

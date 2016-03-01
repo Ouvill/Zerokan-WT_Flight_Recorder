@@ -4,7 +4,7 @@
 #include <ui_mainwindow.h>
 #include <QtWidgets>
 
-class MainWindow: public QWidget , private Ui::MainWindow {
+class MainWindow: public QMainWindow , private Ui::MainWindow {
   Q_OBJECT
 
  private:

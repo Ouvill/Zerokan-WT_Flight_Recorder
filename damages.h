@@ -5,11 +5,19 @@
 #include <vector>
 
 class Msg : public std::string {
- public:
-  Msg(std::string msg);
-  bool isShotDownMsg();
-  bool isDestoryedMsg();
+ private:
+  int type_;
 
+ public:
+  enum{
+    SHOTDOWN_MSG = 0,
+    DESTROYED_MSG = 1,
+    OTHER_MSG = -1,
+  };
+
+  Msg(std::string msg);
+  std::string msg();
+  int type();
 };
 
 class Damage {
@@ -27,15 +35,18 @@ class Damage {
 };
 
 class Damages :public std::vector<Damage>{
+ private:
 
  public:
-  void serch_shot_down();
 };
+
+
 
 class DamageMsg {
  private:
   std::string killer_;
   std::string killer_airframe_;
+  int type;
  public:
   DamageMsg(const std::string& msg);
   std::string killer();
