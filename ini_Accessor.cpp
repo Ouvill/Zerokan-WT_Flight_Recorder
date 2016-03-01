@@ -20,7 +20,7 @@ IniAccessor::IniAccessor(const std::string& filename) {
   if (boost::optional<std::string> client_path_option = pt.get_optional<std::string>("Data.warthunder_client_path")) {
     warthunder_client_path_ = client_path_option.get();
   } else {
-    warthunder_client_path_ = 'C:\Program Files (x86)\Steam\steamapps\common\War Thunder\launcher.exe';
+    warthunder_client_path_ = "C:\\Program Files (x86)\\Steam\\steamapps\\common\\War Thunder\\launcher.exe";
   }
 
 }
