@@ -16,23 +16,23 @@ HudmsgReader::~HudmsgReader() {
 
 bool HudmsgReader::get_damages(Damages& damages) {
 
-//  std::string get_string;
-//  std::string json;
-//  get_string = "/hudmsg?lastEvt=" + std::to_string(lastEvt_) + "&lastDmg=" + std::to_string(lastDmg_);
-//  if (!(http_->get_data(get_string, json))) {
-//    return false;
-//  };
+  std::string get_string;
+  std::string json;
+  get_string = "/hudmsg?lastEvt=" + std::to_string(lastEvt_) + "&lastDmg=" + std::to_string(lastDmg_);
+  if (!(http_->get_data(get_string, json))) {
+    return false;
+  };
 
   picojson::array damages_json;
   picojson::value v;
 
 //    local_file を 読み込み
-  std::ifstream ifs;
-  ifs.open("hudmsg.json");
-  std::istreambuf_iterator<char> it(ifs);
-  std::istreambuf_iterator<char> last;
-  std::string json(it , last);
-  ifs.close();
+//  std::ifstream ifs;
+//  ifs.open("hudmsg.json");
+//  std::istreambuf_iterator<char> it(ifs);
+//  std::istreambuf_iterator<char> last;
+//  std::string json(it , last);
+//  ifs.close();
 
   get_damages_array(json, damages_json);
 
