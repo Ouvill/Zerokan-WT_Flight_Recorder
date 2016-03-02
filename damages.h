@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <list>
 
 class Msg : public std::string {
  private:
@@ -34,7 +35,7 @@ class Damage {
 
 };
 
-class Damages :public std::vector<Damage>{
+class Damages :public std::list<Damage>{
  private:
 
  public:
