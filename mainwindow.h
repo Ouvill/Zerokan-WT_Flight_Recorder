@@ -3,10 +3,10 @@
 
 #include <ui_mainwindow.h>
 #include <QtWidgets>
+#include "damages.h"
 
 class User;
 class GameState;
-class Damages;
 class HudmsgReader;
 
 class MainWindow: public QMainWindow , private Ui::MainWindow {
@@ -14,12 +14,15 @@ class MainWindow: public QMainWindow , private Ui::MainWindow {
 
  private:
   Ui::MainWindow *ui;
-  User *user;
-  GameState *game_state;
-  Damages *damages;
+  User *user_;
+  GameState *game_state_;
+  Damages *damages_;
   HudmsgReader *hudmsg;
 
   int myTimerId;
+
+  void list_clear();
+  void serch_user_msg();
 
  public:
   MainWindow(QWidget *parent = 0);
@@ -28,8 +31,7 @@ class MainWindow: public QMainWindow , private Ui::MainWindow {
  protected:
   void timerEvent(QTimerEvent *e);
 
- private slots:
-  void createUser();
+
 
 
 };
