@@ -1,0 +1,30 @@
+{
+   "objectives" : [
+      {
+         "primary" : true,
+         "status" : "undefined",
+         "text" : "Destroy enemy ground units"
+      },
+      {
+         "primary" : true,
+         "status" : "in_progress",
+         "text" : "Destroy enemy ground units"
+      },
+      {
+         "primary" : true,
+         "status" : "undefined",
+         "text" : "Destroy all bomb targets"
+      },
+      {
+         "primary" : true,
+         "status" : "in_progress",
+         "text" : "Destroy all bomb targets"
+      },
+      {
+         "primary" : true,
+         "status" : "in_progress",
+         "text" : "Destroy the enemy aircraft"
+      }
+   ],
+   "status" : "running"
+}
