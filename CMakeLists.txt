@@ -35,7 +35,7 @@ find_package(Qt5Multimedia)
 get_target_property(QtCore_location Qt5::Multimedia LOCATION)
 find_package(Qt5Widgets)
 get_target_property(QtCore_location Qt5::Widgets LOCATION)
-qt5_wrap_ui(QT_UI_HEADERS mainwindow.ui)
+qt5_wrap_ui(QT_UI_HEADERS mainwindow.ui setting_form.ui)
 
 
 set(SOURCE_FILES main.cpp
