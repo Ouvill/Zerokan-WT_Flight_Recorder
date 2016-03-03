@@ -13,6 +13,7 @@ class Msg : public std::string {
   enum{
     SHOTDOWN_MSG = 0,
     DESTROYED_MSG = 1,
+    CRASHED_MSG = 2,
     OTHER_MSG = -1,
   };
 
