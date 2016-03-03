@@ -40,7 +40,7 @@ void AsyncClient::on_resolve(const boost::system::error_code& error, boost::asio
 
 void AsyncClient::on_connect(const boost::system::error_code &error) {
   if (error) {
-//    std::cout << "connect failed : " << error.message() << std::endl;
+    std::cout << "connect failed : " << error.message() << std::endl;
     is_complete_ = false ;
   }
   else {
@@ -61,7 +61,7 @@ void AsyncClient::send() {
 
 void AsyncClient::on_send(const boost::system::error_code &error, size_t bytes_transferrerd) {
   if ( error ) {
-//    std::cout << "send failed:" << error.message() << std::endl;
+    std::cout << "send failed:" << error.message() << std::endl;
     is_complete_ = false;
   }
 

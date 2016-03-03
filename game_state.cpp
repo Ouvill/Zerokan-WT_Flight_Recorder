@@ -1,6 +1,6 @@
 #include "game_state.h"
 #include "async_client.h"
-#include <boost/asio>
+#include <boost/asio.hpp>
 
 GameState::GameState() {
   state_=0;
@@ -17,7 +17,7 @@ int GameState::get() {
   AsyncClient client(io_service, "localhost" , "8111", "/map_obj.json");
   io_service.run();
 
-  if (!(client.is_complete)) {
+  if (!(client.is_complete())) {
     state_ = NotRunnningClient;
     return state_;
   };
