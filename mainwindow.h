@@ -17,7 +17,7 @@ class MainWindow: public QMainWindow , private Ui::MainWindow {
   User *user_;
   GameState *game_state_;
   Damages *damages_;
-  HudmsgReader *hudmsg;
+  HudmsgReader *hudmsg_;
 
   int myTimerId;
 
