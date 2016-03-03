@@ -40,12 +40,12 @@ qt5_wrap_ui(QT_UI_HEADERS mainwindow.ui)
 
 set(SOURCE_FILES main.cpp
         hudmsg_reader.cpp hudmsg_reader.h
-        http_client.cpp http_client.h
         mainwindow.cpp mainwindow.h
         damages.cpp damages.h
         game_state.cpp game_state.h
         user.cpp user.h
         ini_accessor.cpp ini_accessor.h
+        async_client.cpp async_client.h
         )
 add_executable(${PROJECT_NAME} ${SOURCE_FILES} ${QT_UI_HEADERS})
 

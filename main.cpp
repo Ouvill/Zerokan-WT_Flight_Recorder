@@ -1,5 +1,4 @@
 #include <iostream>
-#include "http_client.h"
 #include "hudmsg_reader.h"
 #include <QApplication>
 #include <QTextCodec>

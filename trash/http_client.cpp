@@ -2,18 +2,18 @@
 
 #include "http_client.h"
 #include <boost/asio.hpp>
+#include <boost/bind.hpp>
 #include <iostream>
 
 using namespace std;
 namespace asio = boost::asio;
 namespace ip = asio::ip;
-
+using asio::ip::tcp;
 
 HttpClient::HttpClient(std::string url) {
   this->url_ = url;
-
-
 }
+
 bool HttpClient::get_data(std::string get_request, std::string &dst_data) {
   try
   {
@@ -69,3 +69,5 @@ bool HttpClient::get_data(std::string get_request, std::string &dst_data) {
     return false;
   }
 }
+
+

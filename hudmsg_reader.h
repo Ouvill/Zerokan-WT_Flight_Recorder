@@ -3,14 +3,12 @@
 
 #include <string>
 #include <vector>
-#include "http_client.h"
 #include "picojson.hpp"
 #include "damages.h"
 
 class HudmsgReader {
 
  private:
-  HttpClient *http_;
   int lastEvt_ = 0;
   int lastDmg_ = 0;
   int get_damages_array(std::string json, picojson::array &json_array);
