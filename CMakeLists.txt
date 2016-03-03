@@ -40,7 +40,6 @@ qt5_wrap_ui(QT_UI_HEADERS mainwindow.ui)
 
 set(SOURCE_FILES main.cpp
         hudmsg_reader.cpp hudmsg_reader.h
-        http_client.cpp http_client.h
         mainwindow.cpp mainwindow.h
         damages.cpp damages.h
         game_state.cpp game_state.h
