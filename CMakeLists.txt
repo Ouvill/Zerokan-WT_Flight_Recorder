@@ -45,6 +45,7 @@ set(SOURCE_FILES main.cpp
         game_state.cpp game_state.h
         user.cpp user.h
         ini_accessor.cpp ini_accessor.h
+        async_client.cpp async_client.h
         )
 add_executable(${PROJECT_NAME} ${SOURCE_FILES} ${QT_UI_HEADERS})
 
