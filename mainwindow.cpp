@@ -7,6 +7,7 @@
 #include "game_state.h"
 #include "user.h"
 
+static const int LOOP_TIME = 10000;
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) , ui(new Ui::MainWindow) {
   setupUi(this);
@@ -17,7 +18,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) , ui(new Ui::MainW
 
   game_state_ = new GameState();
   damages_ = new Damages();
-  myTimerId = startTimer(2000);
+  myTimerId = startTimer(LOOP_TIME);
 
 }
 
@@ -41,8 +42,12 @@ void MainWindow::serch_user_msg() {
     if ( itr->msg().find(user_->name()) != std::string::npos) {
       if (itr->msg().type() == Msg::SHOTDOWN_MSG) {
         ShotDownMsg shotDownMsg(itr->msg());
-        killListWidget->addItem(shotDownMsg.killer().c_str());
-        killedListWidget->addItem(shotDownMsg.victim().c_str());
+
+        std::string killMsg = shotDownMsg.killer() + "(" + shotDownMsg.killer_airframe() + ")" ;
+        killListWidget->addItem(killMsg.c_str());
+
+        std::string killedMsg =shotDownMsg.victim() + "(" + shotDownMsg.victim_airframe() + (")");
+        killedListWidget->addItem((shotDownMsg.victim()+(shotDownMsg.victim_airframe())).c_str());
       }
 
       if (itr->msg().type() == Msg::DESTROYED_MSG) {
@@ -95,6 +100,8 @@ void MainWindow::timerEvent(QTimerEvent *e) {
         break;
 
       case GameState::GameEnd:
+        serch_user_msg();
+
         clientStateLabel->setText(tr("running"));
         gameStateLabel->setText(tr("end"));
         break;
