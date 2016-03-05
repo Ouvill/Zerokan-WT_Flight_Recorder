@@ -32,7 +32,7 @@ MainWindow::~MainWindow() {
 
 void MainWindow::list_clear() {
   killListWidget->clear();
-  killedListWidget->clear();
+  killedByListWidget->clear();
   destroyListWidget->clear();
 }
 
@@ -41,48 +41,53 @@ void MainWindow::serch_user_msg() {
   hudmsg_->get_damages(*tmp_damages);
 
   for (auto itr = tmp_damages->begin(); itr != tmp_damages->end(); ++itr) {
-    if ( itr->msg().find(user_->name()) != std::string::npos) {
-      if (itr->msg().type() == Msg::SHOTDOWN_MSG) {
+
+    switch ( itr->msg().type()) {
+      case  Msg::SHOTDOWN_MSG : {
         ShotDownMsg shotDownMsg(itr->msg());
+        if (shotDownMsg.killer().find(user_->name()) != std::string::npos) {
+          std::string killMsg = shotDownMsg.victim() + "(" + shotDownMsg.victim_airframe() + ")";
+          killListWidget->addItem(killMsg.c_str());
+        }
 
-        std::string killMsg = shotDownMsg.killer() + "(" + shotDownMsg.killer_airframe() + ")" ;
-        killListWidget->addItem(killMsg.c_str());
-
-        std::string killedMsg =shotDownMsg.victim() + "(" + shotDownMsg.victim_airframe() + (")");
-        killedListWidget->addItem((shotDownMsg.victim()+(shotDownMsg.victim_airframe())).c_str());
+        if (shotDownMsg.victim().find(user_->name()) != std::string::npos) {
+          std::string killedByMsg = shotDownMsg.killer() + "(" + shotDownMsg.killer_airframe() + (")");
+          killedByListWidget->addItem(killedByMsg.c_str());
+        }
+        break;
       }
 
-      if (itr->msg().type() == Msg::DESTROYED_MSG) {
+      case Msg::DESTROYED_MSG : {
         DestroyedMsg destroyedMsg(itr->msg());
-        destroyListWidget->addItem(destroyedMsg.victim().c_str());
+        if (destroyedMsg.killer().find(user_->name()) != std::string::npos) {
+          destroyListWidget->addItem(destroyedMsg.victim().c_str());
+          user_->record()->add_destroy_count();
+        }
+
+        break;
+      }
+
+      case Msg::CRASHED_MSG : {
+        DamageMsg crashedMsg(itr->msg());
+        if (crashedMsg.killer().find(user_->name()) != std::string::npos) {
+          killedByListWidget->addItem("You are crash");
+          user_->record()->add_death_count();
+        }
+
+        break;
       }
     }
   }
-
-//    if (itr->msg().type() == Msg::DESTROYED_MSG) {
-//      DestroyedMsg destroyedMsg(itr->msg());
-//      if (destroyedMsg.killer().find( user_->name()) != std::string::npos) {
-//        destroyListWidget->addItem(destroyedMsg.victim().c_str());
-//
-////        user_->record()->add_destroy_count();
-//      }
-//    }
-
-//    if (itr->msg().type() == Msg::CRASHED_MSG) {
-//      DamageMsg crashedMsg(itr->msg());
-//      if (crashedMsg.killer().find( user_->name()) != std::string::npos) {
-//        killedListWidget->addItem("You are crash");
-
-//        user_->record()->add_death_count();
-//      }
-//    }
-//  }
 
   damages_->splice(damages_->end(), *tmp_damages);
   delete tmp_damages;
 
 }
 
+void MainWindow::update_result_view() {
+
+
+}
 
 // ループ処理
 void MainWindow::timerEvent(QTimerEvent *e) {
@@ -104,6 +109,7 @@ void MainWindow::timerEvent(QTimerEvent *e) {
         gameStateLabel->setText(tr("start"));
         user_->reset_record();
         list_clear();
+
 
         delete damages_;
         damages_ = new Damages();
