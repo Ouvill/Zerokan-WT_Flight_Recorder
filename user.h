@@ -18,6 +18,7 @@ class Record {
   int kill_count();
   int death_count();
   int destroy_count();
+  double kill_ratio();
 
   void add_kill_count();
   void add_death_count();
