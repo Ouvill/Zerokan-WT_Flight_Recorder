@@ -13,7 +13,7 @@ static const int LOOP_TIME = 5000;
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) , ui(new Ui::MainWindow) {
   setupUi(this);
 
-  IniAccessor ini("../data/setting.ini");
+  IniAccessor ini("./data/setting.ini");
   user_ = new User(ini.user_name());
   playerNameLabel->setText(user_->name().c_str());
 

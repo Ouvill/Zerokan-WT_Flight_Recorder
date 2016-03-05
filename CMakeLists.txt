@@ -26,6 +26,8 @@ endif()
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 # Instruct CMake to run moc automatically when needed.
 set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTOUIC ON)
+#set(CMAKE_AUTORCC ON)
 # dependency
 find_package(Qt5Core)
 get_target_property(QtCore_location Qt5::Core LOCATION)
@@ -36,7 +38,7 @@ get_target_property(QtCore_location Qt5::Multimedia LOCATION)
 find_package(Qt5Widgets)
 get_target_property(QtCore_location Qt5::Widgets LOCATION)
 qt5_wrap_ui(QT_UI_HEADERS mainwindow.ui)
-
+qt5_add_resources(QRC ${PROJECT_SOURCE_DIR}/Zerokan_WT_Flight_Recorder.qrc)
 
 set(SOURCE_FILES main.cpp
         hudmsg_reader.cpp hudmsg_reader.h
@@ -47,7 +49,7 @@ set(SOURCE_FILES main.cpp
         ini_accessor.cpp ini_accessor.h
         async_client.cpp async_client.h
         timer.cpp timer.h)
-add_executable(${PROJECT_NAME} ${SOURCE_FILES} ${QT_UI_HEADERS})
+add_executable(${PROJECT_NAME} ${SOURCE_FILES} ${QT_UI_HEADERS} ${QRC})
 
 #Use the Boost
 target_link_libraries(${PROJECT_NAME} ${Boost_LIBRARIES})
