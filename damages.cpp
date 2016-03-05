@@ -30,7 +30,7 @@ Damage::Damage(int id, std::string msg, std::string sender, bool enemy, std::str
   this->mode_ = mode;
 }
 
-Msg Damage::msg() { return msg_;};
+Msg& Damage::msg() { return msg_;};
 
 
 

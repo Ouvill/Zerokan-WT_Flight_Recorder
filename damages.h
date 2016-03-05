@@ -18,7 +18,7 @@ class Msg : public std::string {
   };
 
   Msg(std::string msg);
-  std::string msg();
+//  std::string msg();
   int type();
 };
 
@@ -32,7 +32,7 @@ class Damage {
 
  public:
   Damage(int id, std::string msg, std::string sender, bool enemy, std::string mode);
-  Msg msg();
+  Msg& msg();
 
 };
 
