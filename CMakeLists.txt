@@ -33,8 +33,6 @@ find_package(Qt5Core)
 get_target_property(QtCore_location Qt5::Core LOCATION)
 find_package(Qt5Gui)
 get_target_property(QtCore_location Qt5::Gui LOCATION)
-find_package(Qt5Multimedia)
-get_target_property(QtCore_location Qt5::Multimedia LOCATION)
 find_package(Qt5Widgets)
 get_target_property(QtCore_location Qt5::Widgets LOCATION)
 qt5_wrap_ui(QT_UI_HEADERS mainwindow.ui)
@@ -55,7 +53,7 @@ add_executable(${PROJECT_NAME} ${SOURCE_FILES} ${QT_UI_HEADERS} ${QRC})
 target_link_libraries(${PROJECT_NAME} ${Boost_LIBRARIES})
 # Use the Widgets module from Qt 5.
 #target_link_libraries(${PROJECT_NAME} LINK_PUBLIC Qt5::Core Qt5::Gui Qt5::Multimedia Qt5::Widgets)
-target_link_libraries(${PROJECT_NAME} Qt5::Core Qt5::Gui Qt5::Multimedia Qt5::Widgets)
+target_link_libraries(${PROJECT_NAME} Qt5::Core Qt5::Gui Qt5::Widgets)
 
 
 #Boost Setting
@@ -63,4 +61,8 @@ if(WIN32)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D_WIN32_WINNT=0x0501")
     target_link_libraries(${PROJECT_NAME} libboost_system-mgw49-mt-s-1_58.a)
     target_link_libraries(${PROJECT_NAME} ws2_32)
+endif()
+
+if(UNIX)
+    target_link_libraries(${PROJECT_NAME} boost_system pthead)
 endif()
