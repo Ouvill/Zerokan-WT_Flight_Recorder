@@ -2,7 +2,9 @@
 #include "picojson.hpp"
 #include <fstream>
 #include <boost/asio.hpp>
+#include <thread>
 #include "async_client.h"
+
 
 
 HudmsgReader::HudmsgReader() {
@@ -12,8 +14,17 @@ HudmsgReader::HudmsgReader() {
 }
 
 HudmsgReader::~HudmsgReader() {
-
+  delete io_service_;
+  delete client_;
 }
+
+bool HudmsgReader::connect() {
+  io_service_ = new boost::asio::io_service() ;
+  client_ = new AsyncClient(*io_service_, "localhost", "8111", "");
+  client_->connect();
+  io_service_->run();
+}
+
 
 bool HudmsgReader::get_damages(Damages& damages) {
 
@@ -21,15 +32,15 @@ bool HudmsgReader::get_damages(Damages& damages) {
   std::string json;
   get_string = "/hudmsg?lastEvt=" + std::to_string(lastEvt_) + "&lastDmg=" + std::to_string(lastDmg_);
 
-  boost::asio::io_service io_service;
-  AsyncClient client(io_service, "localhost", "8111", get_string);
-  io_service.run();
+  client_->send(get_string);
+  io_service_->run();
 
-  if (!(client.is_complete())) {
+
+  if (!(client_->is_complete())) {
     return false;
   }
 
-  json=client.body();
+  json=client_->body();
 
   std::cout << json << std::endl;
   picojson::array damages_json;
@@ -59,6 +70,8 @@ bool HudmsgReader::get_damages(Damages& damages) {
   return true;
 }
 
+
+
 int HudmsgReader::get_damages_array(std::string json, picojson::array &damages)
 {
   picojson::value v;
@@ -74,4 +87,6 @@ int HudmsgReader::get_damages_array(std::string json, picojson::array &damages)
   return 0;
 }
 
+void get_data(boost::asio::io_service io_service, AsyncClient client) {
 
+}
