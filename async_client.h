@@ -38,6 +38,8 @@ class AsyncClient {
   const std::string body();
 
 
+  void connect();
+  void send(std::string path);
 };
 
 

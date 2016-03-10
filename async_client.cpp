@@ -6,16 +6,25 @@
 namespace asio = boost::asio;
 using asio::ip::tcp;
 
+
+
 AsyncClient::AsyncClient(asio::io_service& io_service , const std::string& server,const std::string port, const std::string& path):
     io_service_(io_service),socket_(io_service), resolver_(io_service), server_(server), path_(path), port_(port) {
 
-  connect(server, port, path);
+//  connect(server, port, path);
 }
 
 
 
 
 // 接続
+void AsyncClient::connect(){
+  tcp::resolver::query query(server_,port_);
+  resolver_.async_resolve(query, boost::bind(&AsyncClient::on_resolve, this,
+                                             asio::placeholders::error(), asio::placeholders::iterator()));
+}
+
+
 void AsyncClient::connect(const std::string& server,const std::string port, const std::string& path) {
 
   tcp::resolver::query query(server, port);
@@ -51,6 +60,16 @@ void AsyncClient::on_connect(const boost::system::error_code &error) {
 // メッセージ送信
 void AsyncClient::send() {
   std::string send_data_ = "GET " + path_ +" HTTP/1.0\r\n\r\n";
+  asio::async_write(
+      socket_,
+      asio::buffer(send_data_),
+      boost::bind(&AsyncClient::on_send, this,
+                  asio::placeholders::error,
+                  asio::placeholders::bytes_transferred));
+}
+
+void AsyncClient::send(std::string path) {
+  std::string send_data_ = "GET " + path +" HTTP/1.0\r\n\r\n";
   asio::async_write(
       socket_,
       asio::buffer(send_data_),
