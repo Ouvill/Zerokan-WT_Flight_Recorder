@@ -6,7 +6,8 @@
 
 
 HudmsgReader::HudmsgReader() {
-
+  lastEvt_ = 0;
+  lastDmg_ = 0;
 
 }
 

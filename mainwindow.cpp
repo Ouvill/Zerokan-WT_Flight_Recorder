@@ -6,18 +6,20 @@
 #include "ini_accessor.h"
 #include "game_state.h"
 #include "user.h"
+#include "timer.h"
 
-static const int LOOP_TIME = 10000;
+static const int LOOP_TIME = 5000;
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) , ui(new Ui::MainWindow) {
   setupUi(this);
 
-  IniAccessor ini("../data/setting.ini");
+  IniAccessor ini("./data/setting.ini");
   user_ = new User(ini.user_name());
   playerNameLabel->setText(user_->name().c_str());
 
   game_state_ = new GameState();
   damages_ = new Damages();
+  hudmsg_ = new HudmsgReader();
   myTimerId = startTimer(LOOP_TIME);
 
 }
@@ -30,29 +32,49 @@ MainWindow::~MainWindow() {
 
 void MainWindow::list_clear() {
   killListWidget->clear();
-  killedListWidget->clear();
+  killedByListWidget->clear();
   destroyListWidget->clear();
 }
 
 void MainWindow::serch_user_msg() {
   Damages *tmp_damages = new Damages;
-  hudmsg->get_damages(*tmp_damages);
+  hudmsg_->get_damages(*tmp_damages);
 
   for (auto itr = tmp_damages->begin(); itr != tmp_damages->end(); ++itr) {
-    if ( itr->msg().find(user_->name()) != std::string::npos) {
-      if (itr->msg().type() == Msg::SHOTDOWN_MSG) {
+
+    switch ( itr->msg().type()) {
+      case  Msg::SHOTDOWN_MSG : {
         ShotDownMsg shotDownMsg(itr->msg());
+        if (shotDownMsg.killer().find(user_->name()) != std::string::npos) {
+          std::string killMsg = shotDownMsg.victim() + "(" + shotDownMsg.victim_airframe() + ")";
+          killListWidget->addItem(killMsg.c_str());
+        }
 
-        std::string killMsg = shotDownMsg.killer() + "(" + shotDownMsg.killer_airframe() + ")" ;
-        killListWidget->addItem(killMsg.c_str());
-
-        std::string killedMsg =shotDownMsg.victim() + "(" + shotDownMsg.victim_airframe() + (")");
-        killedListWidget->addItem((shotDownMsg.victim()+(shotDownMsg.victim_airframe())).c_str());
+        if (shotDownMsg.victim().find(user_->name()) != std::string::npos) {
+          std::string killedByMsg = shotDownMsg.killer() + "(" + shotDownMsg.killer_airframe() + (")");
+          killedByListWidget->addItem(killedByMsg.c_str());
+        }
+        break;
       }
 
-      if (itr->msg().type() == Msg::DESTROYED_MSG) {
+      case Msg::DESTROYED_MSG : {
         DestroyedMsg destroyedMsg(itr->msg());
-        destroyListWidget->addItem(destroyedMsg.victim().c_str());
+        if (destroyedMsg.killer().find(user_->name()) != std::string::npos) {
+          destroyListWidget->addItem(destroyedMsg.victim().c_str());
+          user_->record()->add_destroy_count();
+        }
+
+        break;
+      }
+
+      case Msg::CRASHED_MSG : {
+        DamageMsg crashedMsg(itr->msg());
+        if (crashedMsg.killer().find(user_->name()) != std::string::npos) {
+          killedByListWidget->addItem("You are crash");
+          user_->record()->add_death_count();
+        }
+
+        break;
       }
     }
   }
@@ -62,6 +84,12 @@ void MainWindow::serch_user_msg() {
 
 }
 
+void MainWindow::update_result_widget() {
+  double kill_ratio = user_->record()->kill_ratio();
+  killDeathLabel->setText(QString::number(kill_ratio));
+
+
+}
 
 // ループ処理
 void MainWindow::timerEvent(QTimerEvent *e) {
@@ -87,7 +115,6 @@ void MainWindow::timerEvent(QTimerEvent *e) {
 
         delete damages_;
         damages_ = new Damages();
-
         std::cout << "game start" << std::endl;
 
         break;
@@ -95,15 +122,17 @@ void MainWindow::timerEvent(QTimerEvent *e) {
       case GameState::GameRunning:
         clientStateLabel->setText(tr("running"));
         gameStateLabel->setText(tr("running"));
-
         serch_user_msg();
+        update_result_widget();
         break;
 
       case GameState::GameEnd:
         serch_user_msg();
 
+
         clientStateLabel->setText(tr("running"));
         gameStateLabel->setText(tr("end"));
+
         break;
 
     }

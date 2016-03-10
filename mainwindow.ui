@@ -22,7 +22,7 @@
         <item>
          <widget class="QLabel" name="label_4">
           <property name="text">
-           <string>Kill List</string>
+           <string>You kill</string>
           </property>
          </widget>
         </item>
@@ -36,12 +36,12 @@
         <item>
          <widget class="QLabel" name="label_5">
           <property name="text">
-           <string>Killed List</string>
+           <string>You are killed by</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QListWidget" name="killedListWidget"/>
+         <widget class="QListWidget" name="killedByListWidget"/>
         </item>
        </layout>
       </item>
@@ -50,7 +50,7 @@
         <item>
          <widget class="QLabel" name="label_9">
           <property name="text">
-           <string>Destroy Object</string>
+           <string>You destroy</string>
           </property>
          </widget>
         </item>
@@ -167,7 +167,7 @@
  </widget>
  <tabstops>
   <tabstop>killListWidget</tabstop>
-  <tabstop>killedListWidget</tabstop>
+  <tabstop>killedByListWidget</tabstop>
   <tabstop>destroyListWidget</tabstop>
  </tabstops>
  <resources/>

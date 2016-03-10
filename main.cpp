@@ -22,6 +22,9 @@ int main(int argc, char* argv[]) {
   QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
   MainWindow *mainWindow = new MainWindow;
   mainWindow->show();
+
+  Q_INIT_RESOURCE(Zerokan_WT_Flight_Recorder);
+
   return app.exec();
 
 }

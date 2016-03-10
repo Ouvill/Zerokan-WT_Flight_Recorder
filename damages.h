@@ -13,11 +13,12 @@ class Msg : public std::string {
   enum{
     SHOTDOWN_MSG = 0,
     DESTROYED_MSG = 1,
+    CRASHED_MSG = 2,
     OTHER_MSG = -1,
   };
 
   Msg(std::string msg);
-  std::string msg();
+//  std::string msg();
   int type();
 };
 
@@ -31,7 +32,7 @@ class Damage {
 
  public:
   Damage(int id, std::string msg, std::string sender, bool enemy, std::string mode);
-  Msg msg();
+  Msg& msg();
 
 };
 
