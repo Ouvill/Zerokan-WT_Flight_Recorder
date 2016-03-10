@@ -19,11 +19,13 @@ class MainWindow: public QMainWindow , private Ui::MainWindow {
   Damages *damages_;
   HudmsgReader *hudmsg_;
 
-  int myTimerId;
+  int clientRunningTimer;
+  int isClientRunnningTimer;
 
   void list_clear();
   void update_result_widget();
   void serch_user_msg();
+  void onRunningClient();
 
  public:
   MainWindow(QWidget *parent = 0);
