@@ -84,7 +84,9 @@ void MainWindow::serch_user_msg() {
 
 }
 
-void MainWindow::update_result_view() {
+void MainWindow::update_result_widget() {
+  double kill_ratio = user_->record()->kill_ratio();
+  killDeathLabel->setText(QString::number(kill_ratio));
 
 
 }
@@ -120,8 +122,8 @@ void MainWindow::timerEvent(QTimerEvent *e) {
       case GameState::GameRunning:
         clientStateLabel->setText(tr("running"));
         gameStateLabel->setText(tr("running"));
-
         serch_user_msg();
+        update_result_widget();
         break;
 
       case GameState::GameEnd:

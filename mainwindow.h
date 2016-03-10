@@ -22,7 +22,7 @@ class MainWindow: public QMainWindow , private Ui::MainWindow {
   int myTimerId;
 
   void list_clear();
-  void update_result_view();
+  void update_result_widget();
   void serch_user_msg();
 
  public:
