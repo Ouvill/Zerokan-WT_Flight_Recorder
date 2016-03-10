@@ -17,3 +17,15 @@ bool ClientState::isRunning() {
   return output.startsWith(QString("\"%1").arg(process_));
 }
 
+int ClientState::get(){
+  state_ = isRunning();
+  if (!previous_state && !state_) {
+    return NOT_RUNNING;
+  } else if (!previous_state && state_) {
+    return START;
+  } else if (previous_state && state_) {
+    return RUNNING;
+  } else if (previous_state && !state_) {
+    return END;
+  }
+}
