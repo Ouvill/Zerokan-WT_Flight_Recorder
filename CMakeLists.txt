@@ -46,7 +46,7 @@ set(SOURCE_FILES main.cpp
         user.cpp user.h
         ini_accessor.cpp ini_accessor.h
         async_client.cpp async_client.h
-        )
+        setting_form.cpp setting_form.h)
 add_executable(${PROJECT_NAME} ${SOURCE_FILES} ${QT_UI_HEADERS})
 
 #Use the Boost
