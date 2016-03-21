@@ -7,8 +7,10 @@
 #include "game_state.h"
 #include "user.h"
 #include "timer.h"
+#include "client_state.h"
 
-static const int CHECK_TIME = 10000;
+
+static const int CHECK_TIME = 500;
 static const int LOOP_TIME = 5000;
 
 
@@ -22,9 +24,10 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) , ui(new Ui::MainW
   game_state_ = new GameState();
   damages_ = new Damages();
   hudmsg_ = new HudmsgReader();
+  client_state_ = new ClientState("aces.exe");
 
   isClientRunnningTimer = startTimer(CHECK_TIME);
-  clientRunningTimer = startTimer(LOOP_TIME);
+
 
 }
 
@@ -101,18 +104,37 @@ void MainWindow::update_result_widget() {
 void MainWindow::timerEvent(QTimerEvent *e) {
   if (e->timerId() == isClientRunnningTimer) {
     //TODO タスクマネージャーからaces.exe が起動しているかチェック
-    if (isRunnningClient()) {
-      hudmsg_ = new HudmsgReader();
-      game_state = new GameState();
+    switch (client_state_->get()) {
+      case ClientState::NOT_RUNNING:
+
+        break;
+
+      case ClientState::START:
+
+        hudmsg_ = new HudmsgReader();
+        game_state_ = new GameState();
+
+        std::cout << "Start" << std::endl;
+
+        break;
+
+      case ClientState::RUNNING:
+        onRunningClient();
+
+        std::cout << "RUNNNING" << std::endl;
+        break;
+
+      case ClientState::END:
+        std::cout << "END" << std::endl;
+        break;
     }
-
   }
 
-  if (e->timerId() == clientRunningTimer) {
-    std::cout << "loop" << endl;
-    onRunningClient();
-
-  }
+//  if (e->timerId() == clientRunningTimer) {
+//    std::cout << "loop" << endl;
+//    onRunningClient();
+//
+//  }
 }
 
 void MainWindow::onRunningClient() {

@@ -18,14 +18,19 @@ bool ClientState::isRunning() {
 }
 
 int ClientState::get(){
+  int state;
   state_ = isRunning();
-  if (!previous_state && !state_) {
-    return NOT_RUNNING;
-  } else if (!previous_state && state_) {
-    return START;
-  } else if (previous_state && state_) {
-    return RUNNING;
-  } else if (previous_state && !state_) {
-    return END;
+  if (!previous_state_ && !state_) {
+    state = NOT_RUNNING;
+  } else if (!previous_state_ && state_) {
+    state = START;
+  } else if (previous_state_ && state_) {
+    state = RUNNING;
+  } else if (previous_state_ && !state_) {
+    state = END;
   }
+
+  previous_state_ = state_;
+  return state;
+
 }

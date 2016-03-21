@@ -8,6 +8,7 @@
 class User;
 class GameState;
 class HudmsgReader;
+class ClientState;
 
 class MainWindow: public QMainWindow , private Ui::MainWindow {
   Q_OBJECT
@@ -15,6 +16,7 @@ class MainWindow: public QMainWindow , private Ui::MainWindow {
  private:
   Ui::MainWindow *ui;
   User *user_;
+  ClientState *client_state_;
   GameState *game_state_;
   Damages *damages_;
   HudmsgReader *hudmsg_;

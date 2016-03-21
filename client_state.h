@@ -6,7 +6,7 @@ class ClientState: public QObject {
   Q_OBJECT
  private:
   bool state_ = false;
-  bool previous_state=false;
+  bool previous_state_ =false;
   QString process_;
  public:
   enum {

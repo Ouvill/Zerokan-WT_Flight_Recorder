@@ -11,6 +11,10 @@ HudmsgReader::HudmsgReader() {
   lastEvt_ = 0;
   lastDmg_ = 0;
 
+  io_service_ = new boost::asio::io_service() ;
+  client_ = new AsyncClient(*io_service_, "localhost", "8111", "");
+  client_->connect();
+  io_service_->run();
 }
 
 HudmsgReader::~HudmsgReader() {
@@ -19,10 +23,7 @@ HudmsgReader::~HudmsgReader() {
 }
 
 bool HudmsgReader::connect() {
-  io_service_ = new boost::asio::io_service() ;
-  client_ = new AsyncClient(*io_service_, "localhost", "8111", "");
-  client_->connect();
-  io_service_->run();
+
 }
 
 
@@ -31,6 +32,11 @@ bool HudmsgReader::get_damages(Damages& damages) {
   std::string get_string;
   std::string json;
   get_string = "/hudmsg?lastEvt=" + std::to_string(lastEvt_) + "&lastDmg=" + std::to_string(lastDmg_);
+
+//  io_service_ = new boost::asio::io_service() ;
+//  client_ = new AsyncClient(*io_service_, "localhost", "8111", get_string);
+//  client_->connect();
+//  io_service_->run();
 
   client_->send(get_string);
   io_service_->run();
