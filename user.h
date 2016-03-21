@@ -2,6 +2,7 @@
 #define ZEROKAN_WT_FLIGHT_RECORDER_USER_H
 
 #include <string>
+#include "timer.h"
 
 class Record {
  private:
@@ -17,6 +18,7 @@ class Record {
   int kill_count();
   int death_count();
   int destroy_count();
+  double kill_ratio();
 
   void add_kill_count();
   void add_death_count();

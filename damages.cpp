@@ -8,6 +8,8 @@ Msg::Msg(std::string msg) : std::string(msg) {
     type_ = SHOTDOWN_MSG;
   } else if (find(" destroyed ") != std::string::npos ) {
     type_ = DESTROYED_MSG;
+  } else if (find(" has crashed.") != std::string::npos) {
+    type_ = CRASHED_MSG;
   } else {
     type_ = OTHER_MSG;
   }
@@ -28,7 +30,7 @@ Damage::Damage(int id, std::string msg, std::string sender, bool enemy, std::str
   this->mode_ = mode;
 }
 
-Msg Damage::msg() { return msg_;};
+Msg& Damage::msg() { return msg_;};
 
 
 

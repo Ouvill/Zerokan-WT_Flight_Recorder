@@ -24,7 +24,7 @@ class AsyncClient {
   void connect(const std::string& server,const std::string port, const std::string& path);
   void on_resolve(const boost::system::error_code& error, boost::asio::ip::tcp::resolver::iterator endpoint_iterator);
   void on_connect(const boost::system::error_code& error);
-  void send();
+
   void on_send(const boost::system::error_code& error, size_t bytes_transferrerd);
   void start_recieve();
   void on_receive(const boost::system::error_code& error, size_t bytes_transferred);
@@ -32,7 +32,7 @@ class AsyncClient {
 
  public:
   AsyncClient(boost::asio::io_service& io_service,const std::string& server, const std::string port, const std::string& path);
-
+  void send();
   bool is_complete();
   const std::string& data();
   const std::string body();

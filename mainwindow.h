@@ -17,11 +17,12 @@ class MainWindow: public QMainWindow , private Ui::MainWindow {
   User *user_;
   GameState *game_state_;
   Damages *damages_;
-  HudmsgReader *hudmsg;
+  HudmsgReader *hudmsg_;
 
   int myTimerId;
 
   void list_clear();
+  void update_result_widget();
   void serch_user_msg();
 
  public:

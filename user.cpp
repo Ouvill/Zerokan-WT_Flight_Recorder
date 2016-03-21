@@ -14,8 +14,13 @@ int Record::death_count() {
   return death_count_;
 }
 int Record::destroy_count() {
-  return 0;
+  return destroy_count_;
 }
+double Record::kill_ratio() {
+  return static_cast<double>(kill_count_)/death_count_;
+}
+
+
 void Record::add_kill_count() {
   kill_count_++;
 }
