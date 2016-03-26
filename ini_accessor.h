@@ -15,6 +15,8 @@ class IniAccessor {
   std::string user_name();
   std::string warthunder_client_path();
 
+  void set_user_name(std::string user_name);
+
   void export_ini();
 
 };
