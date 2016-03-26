@@ -3,10 +3,27 @@
 
 #include <ui_setting_form.h>
 #include <QtWidgets>
+#include "ini_accessor.h"
+
+class IniAccessor;
 
 
+class SettingForm : public QWidget, private Ui::SettingForm{
+  Q_OBJECT
 
-class setting_form {
+private:
+  QString user_name;
+  IniAccessor *iniAccessor_;
+
+ public:
+  SettingForm(QWidget *parent, IniAccessor *iniAccessor);
+
+ public slots:
+  void okClicked();
+  void applyCliked();
+
+ signals:
+  void changeUserName();
 
 };
 
