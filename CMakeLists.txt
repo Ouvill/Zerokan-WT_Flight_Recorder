@@ -35,8 +35,9 @@ find_package(Qt5Gui)
 get_target_property(QtCore_location Qt5::Gui LOCATION)
 find_package(Qt5Widgets)
 get_target_property(QtCore_location Qt5::Widgets LOCATION)
-qt5_wrap_ui(QT_UI_HEADERS mainwindow.ui)
+qt5_wrap_ui(QT_UI_HEADERS mainwindow.ui setting_form.ui)
 qt5_add_resources(QRC ${PROJECT_SOURCE_DIR}/Zerokan_WT_Flight_Recorder.qrc)
+
 
 set(SOURCE_FILES main.cpp
         hudmsg_reader.cpp hudmsg_reader.h
@@ -46,6 +47,7 @@ set(SOURCE_FILES main.cpp
         user.cpp user.h
         ini_accessor.cpp ini_accessor.h
         async_client.cpp async_client.h
+        setting_form.cpp setting_form.h
         timer.cpp timer.h)
 add_executable(${PROJECT_NAME} ${SOURCE_FILES} ${QT_UI_HEADERS} ${QRC})
 

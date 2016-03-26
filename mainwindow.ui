@@ -14,54 +14,8 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QGridLayout" name="gridLayout_2">
-    <item row="0" column="1">
-     <layout class="QHBoxLayout" name="horizontalLayout_2">
-      <item>
-       <layout class="QVBoxLayout" name="verticalLayout">
-        <item>
-         <widget class="QLabel" name="label_4">
-          <property name="text">
-           <string>You kill</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QListWidget" name="killListWidget"/>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QVBoxLayout" name="verticalLayout_2">
-        <item>
-         <widget class="QLabel" name="label_5">
-          <property name="text">
-           <string>You are killed by</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QListWidget" name="killedByListWidget"/>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QVBoxLayout" name="verticalLayout_3">
-        <item>
-         <widget class="QLabel" name="label_9">
-          <property name="text">
-           <string>You destroy</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QListWidget" name="destroyListWidget"/>
-        </item>
-       </layout>
-      </item>
-     </layout>
-    </item>
-    <item row="0" column="0">
+   <layout class="QHBoxLayout" name="horizontalLayout_3">
+    <item>
      <layout class="QVBoxLayout" name="verticalLayout_5">
       <item>
        <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -151,6 +105,52 @@
       </item>
      </layout>
     </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout">
+        <item>
+         <widget class="QLabel" name="label_4">
+          <property name="text">
+           <string>You kill</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QListWidget" name="killListWidget"/>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <item>
+         <widget class="QLabel" name="label_5">
+          <property name="text">
+           <string>You are killed by</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QListWidget" name="killedByListWidget"/>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout_3">
+        <item>
+         <widget class="QLabel" name="label_9">
+          <property name="text">
+           <string>You destroy</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QListWidget" name="destroyListWidget"/>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </item>
    </layout>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -162,8 +162,32 @@
      <height>24</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuMenu">
+    <property name="title">
+     <string>Menu</string>
+    </property>
+    <addaction name="settingAction"/>
+    <addaction name="aboutAction"/>
+    <addaction name="actionExit"/>
+   </widget>
+   <addaction name="menuMenu"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <action name="aboutAction">
+   <property name="text">
+    <string>about</string>
+   </property>
+  </action>
+  <action name="actionExit">
+   <property name="text">
+    <string>exit</string>
+   </property>
+  </action>
+  <action name="settingAction">
+   <property name="text">
+    <string>setting</string>
+   </property>
+  </action>
  </widget>
  <tabstops>
   <tabstop>killListWidget</tabstop>

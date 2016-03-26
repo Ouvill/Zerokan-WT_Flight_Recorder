@@ -32,6 +32,10 @@ std::string IniAccessor::warthunder_client_path() {
   return warthunder_client_path_;
 }
 
+void IniAccessor::set_user_name(std::string user_name) {
+  user_name_ = user_name;
+}
+
 
 void IniAccessor::export_ini() {
   ptree pt;
@@ -41,3 +45,4 @@ void IniAccessor::export_ini() {
 
   write_ini(filename_, pt);
 }
+
