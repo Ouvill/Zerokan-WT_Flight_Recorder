@@ -19,5 +19,5 @@ void SettingForm::applyCliked() {
   iniAccessor_->set_user_name(userNameLineEdit->text().toStdString());
   iniAccessor_->export_ini();
 
-  changeUserName();
+  change_setting();
 }

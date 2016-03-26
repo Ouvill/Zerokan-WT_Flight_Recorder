@@ -23,7 +23,7 @@ private:
   void applyCliked();
 
  signals:
-  void changeUserName();
+  void change_setting();
 
 };
 
