@@ -129,6 +129,7 @@ void MainWindow::timerEvent(QTimerEvent *e) {
         clientStateLabel->setText(tr("running"));
         gameStateLabel->setText(tr("start"));
         user_->reset_record();
+        timer_ = new Timer();
         list_clear();
 
 
@@ -147,6 +148,8 @@ void MainWindow::timerEvent(QTimerEvent *e) {
 
       case GameState::GameEnd:
         serch_user_msg();
+        timer_->stop();
+
 
 
         clientStateLabel->setText(tr("running"));

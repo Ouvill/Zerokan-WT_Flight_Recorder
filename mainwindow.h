@@ -11,6 +11,7 @@ class GameState;
 class HudmsgReader;
 class SettingForm;
 class IniAccessor;
+class Timer;
 
 class MainWindow: public QMainWindow , private Ui::MainWindow {
   Q_OBJECT
@@ -24,6 +25,7 @@ class MainWindow: public QMainWindow , private Ui::MainWindow {
   IniAccessor *ini_;
 
   SettingForm *settingForm_;
+  Timer *timer_;
 
   int myTimerId;
 

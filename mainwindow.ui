@@ -167,8 +167,6 @@
      <string>Menu</string>
     </property>
     <addaction name="settingAction"/>
-    <addaction name="aboutAction"/>
-    <addaction name="actionExit"/>
    </widget>
    <addaction name="menuMenu"/>
   </widget>
