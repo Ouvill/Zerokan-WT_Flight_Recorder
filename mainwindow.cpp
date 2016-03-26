@@ -1,4 +1,5 @@
 #include "mainwindow.h"
+#include "setting_form.h"
 #include <sstream>
 #include <boost/algorithm/string.hpp>
 #include <QtCore/qstring.h>
@@ -13,14 +14,17 @@ static const int LOOP_TIME = 5000;
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) , ui(new Ui::MainWindow) {
   setupUi(this);
 
-  IniAccessor ini("./data/setting.ini");
-  user_ = new User(ini.user_name());
+  ini_ = new IniAccessor("./data/setting.ini");
+  user_ = new User(ini_->user_name());
   playerNameLabel->setText(user_->name().c_str());
 
   game_state_ = new GameState();
   damages_ = new Damages();
   hudmsg_ = new HudmsgReader();
   myTimerId = startTimer(LOOP_TIME);
+
+
+  connect(settingAction, SIGNAL(triggered()), this, SLOT(settingSelected()));
 
 }
 
@@ -84,12 +88,27 @@ void MainWindow::serch_user_msg() {
 
 }
 
+void MainWindow::settingSelected() {
+  settingForm_ = new SettingForm(0, ini_);
+  settingForm_->show();
+
+  connect(settingForm_, SIGNAL(change_setting()), this, SLOT(relord_setting()));
+}
+
+
+void MainWindow::relord_setting() {
+  delete user_;
+  user_ = new User(ini_->user_name());
+}
+
 void MainWindow::update_result_widget() {
   double kill_ratio = user_->record()->kill_ratio();
   killDeathLabel->setText(QString::number(kill_ratio));
 
 
 }
+
+
 
 // ループ処理
 void MainWindow::timerEvent(QTimerEvent *e) {
@@ -138,4 +157,5 @@ void MainWindow::timerEvent(QTimerEvent *e) {
     }
   }
 }
+
 
