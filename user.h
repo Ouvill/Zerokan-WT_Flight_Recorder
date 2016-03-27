@@ -23,6 +23,8 @@ class Record {
   void add_kill_count();
   void add_death_count();
   void add_destroy_count();
+
+  void export_csv(std::string filename,const time_t time);
 };
 
 

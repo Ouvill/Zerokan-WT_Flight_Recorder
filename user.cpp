@@ -1,11 +1,15 @@
 #include "user.h"
+#include <fstream>
+#include <boost/filesystem.hpp>
+
 Record::Record() {
   kill_count_ = 0;
   death_count_ = 0;
   destroy_count_ = 0;
 }
 
-Record::~Record() {};
+Record::~Record() {
+};
 
 int Record::kill_count() {
   return kill_count_;
@@ -31,6 +35,22 @@ void Record::add_destroy_count() {
   destroy_count_++;
 }
 
+void Record::export_csv(std::string filename,const time_t time) {
+  if (!boost::filesystem::exists(filename)) {
+    std::ofstream of(filename, std::ios::app);
+
+    of << "開始時間,キル,デス,地上物破壊数" << std::endl;
+    of.close();
+  }
+
+  struct tm *tm_st = localtime(&time);
+  std::ofstream of(filename, std::ios::app);
+  of << tm_st->tm_year << tm_st->tm_mon+1 << tm_st->tm_mday << "_" << tm_st->tm_hour << tm_st->tm_min << tm_st->tm_sec << ",";
+  of << kill_count_ << ",";
+  of << death_count_ << ",";
+  of << destroy_count_ << std::endl;
+
+}
 
 User::User(std::string name) {
   name_ = name;
@@ -51,5 +71,6 @@ void User::reset_record() {
   delete record_;
   record_ = new Record();
 }
+
 
 
