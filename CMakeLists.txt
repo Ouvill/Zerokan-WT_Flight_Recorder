@@ -62,6 +62,7 @@ target_link_libraries(${PROJECT_NAME} Qt5::Core Qt5::Gui Qt5::Widgets)
 if(MINGW)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D_WIN32_WINNT=0x0501")
     target_link_libraries(${PROJECT_NAME} libboost_system-mgw49-mt-s-1_58.a)
+    target_link_libraries(${PROJECT_NAME} libboost_filesystem-mgw49-mt-s-1_58.a)
     target_link_libraries(${PROJECT_NAME} ws2_32)
 endif()
 
