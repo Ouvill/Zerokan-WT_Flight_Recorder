@@ -8,8 +8,12 @@
 #include "game_state.h"
 #include "user.h"
 #include "timer.h"
+#include <fstream>
+#include <boost/filesystem/operations.hpp>
 
 static const int LOOP_TIME = 5000;
+static const std::string RECORDS_FILE = "./data/records.csv";
+static const std::string REVANGE_LIST = "./data/revange_list.csv";
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) , ui(new Ui::MainWindow) {
   setupUi(this);
@@ -49,15 +53,38 @@ void MainWindow::serch_user_msg() {
     switch ( itr->msg().type()) {
       case  Msg::SHOTDOWN_MSG : {
         ShotDownMsg shotDownMsg(itr->msg());
+        // kill
         if (shotDownMsg.killer().find(user_->name()) != std::string::npos) {
           std::string killMsg = shotDownMsg.victim() + "(" + shotDownMsg.victim_airframe() + ")";
           killListWidget->addItem(killMsg.c_str());
+          user_->record()->add_kill_count();
         }
 
+        // killed by
         if (shotDownMsg.victim().find(user_->name()) != std::string::npos) {
           std::string killedByMsg = shotDownMsg.killer() + "(" + shotDownMsg.killer_airframe() + (")");
           killedByListWidget->addItem(killedByMsg.c_str());
+          user_->record()->add_death_count();
+
+          if (!boost::filesystem::exists(REVANGE_LIST)) {
+            std::ofstream of(REVANGE_LIST, std::ios::app);
+
+            of << "戦闘開始時刻,敵プレイヤー名,敵の機体,自身の機体" << std::endl;
+            of.close();
+          }
+
+          time_t time = timer_->start_time();
+          struct tm *tm_st = localtime(&time);
+          std::ofstream of(REVANGE_LIST, std::ios::app);
+          of << tm_st->tm_year << tm_st->tm_mon+1 << tm_st->tm_mday << "_" << tm_st->tm_hour << tm_st->tm_min << tm_st->tm_sec << ",";
+          of << shotDownMsg.killer() << ",";
+          of << shotDownMsg.killer_airframe() << ",";
+          of << shotDownMsg.victim_airframe() << std::endl;
+          of.close();
+
         }
+
+
         break;
       }
 
@@ -66,9 +93,12 @@ void MainWindow::serch_user_msg() {
         if (destroyedMsg.killer().find(user_->name()) != std::string::npos) {
           destroyListWidget->addItem(destroyedMsg.victim().c_str());
           user_->record()->add_destroy_count();
+
+
         }
 
-        break;
+
+       break;
       }
 
       case Msg::CRASHED_MSG : {
@@ -81,6 +111,8 @@ void MainWindow::serch_user_msg() {
         break;
       }
     }
+
+
   }
 
   damages_->splice(damages_->end(), *tmp_damages);
@@ -99,6 +131,7 @@ void MainWindow::settingSelected() {
 void MainWindow::relord_setting() {
   delete user_;
   user_ = new User(ini_->user_name());
+  playerNameLabel->setText(user_->name().c_str());
 }
 
 void MainWindow::update_result_widget() {
@@ -122,7 +155,7 @@ void MainWindow::timerEvent(QTimerEvent *e) {
       case GameState::NotGaming:
         clientStateLabel->setText(tr("running"));
         gameStateLabel->setText(tr("not running"));
-
+        hudmsg_->get_damages(*damages_);
         break;
 
       case GameState::GameStart:
@@ -149,7 +182,7 @@ void MainWindow::timerEvent(QTimerEvent *e) {
       case GameState::GameEnd:
         serch_user_msg();
         timer_->stop();
-
+        user_->record()->export_csv(RECORDS_FILE,timer_->start_time());
 
 
         clientStateLabel->setText(tr("running"));
